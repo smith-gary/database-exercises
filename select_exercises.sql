@@ -2,6 +2,7 @@ use codeup_test_db;
 
 select name as 'Pink Floyd album names' from albums where artist = 'Pink Floyd';
 
+
 select 'The year Sgt. Pepper''s Lonely Hearts Club Band was released.' as 'Year Released';
 select release_date from albums where name = 'Sgt. Pepper''s Lonely Hearts Club Band';
 

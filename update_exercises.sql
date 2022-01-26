@@ -4,6 +4,7 @@ select * from albums;
 update albums
 set sales = sales * 10
 where sales = sales;
+-- not needed ^^
 select * from albums;
 
 select name from albums where release_date < 1980;
