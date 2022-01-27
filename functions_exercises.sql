@@ -18,7 +18,7 @@ where year(hire_date) between 1990 and 1999
     and day(birth_date) = 25
 order by birth_date asc, hire_date desc;
 
-select concat(first_name, ' ', last_name,' Days working in the company: ', datediff(now(), hire_date))
+select concat(first_name, ' ', last_name,' has been working in the company for ', datediff(now(), hire_date), ' days.')
 from employees
 where year(hire_date) between 1990 and 1999
   and month(birth_date) = 12
