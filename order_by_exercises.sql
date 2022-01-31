@@ -1,9 +1,9 @@
 use employees;
 
-select first_name, last_name
+select *
 from employees
 where first_name in ('irena', 'vidya', 'maya')
-order by first_name asc;
+order by first_name, emp_no desc;
 
 select first_name, last_name
 from employees
