@@ -51,5 +51,53 @@ from users
 join roles r on users.role_id = r.id
 group by role_id;
 
+use employees;
+
+# query that shows each department along with the name of the current manager for that department.
+SELECT d.dept_name as Department_Name,
+        concat(e.first_name, ' ', e.last_name) as Department_Manager
+FROM employees as e
+         JOIN dept_manager as de
+              ON de.emp_no = e.emp_no
+         JOIN departments as d
+              ON d.dept_no = de.dept_no
+WHERE de.to_date = '9999-01-01';
+
+SELECT d.dept_name as Department_Name,
+       concat(e.first_name, ' ', e.last_name) as Department_Manager
+FROM employees as e
+         JOIN dept_manager as de
+              ON de.emp_no = e.emp_no
+         JOIN departments as d
+              ON d.dept_no = de.dept_no
+WHERE de.to_date = '9999-01-01' and e.gender = 'f';
+
+SELECT concat(t.title) as title,
+    count(*) as Total
+FROM titles as t
+         JOIN dept_emp as de
+              ON t.emp_no = de.emp_no
+         JOIN departments as ds
+              ON de.dept_no = ds.dept_no
+WHERE ds.dept_name in ('Customer Service') and t.to_date in ('9999-01-01')
+group by title;
+
+
+SELECT d.dept_name as Department_Name,
+       concat(e.first_name, ' ', e.last_name) as Department_Manager,
+       s.salary as Salary
+FROM employees as e
+         JOIN dept_manager as de
+              ON de.emp_no = e.emp_no
+         left join departments as d
+              ON d.dept_no = de.dept_no
+         join salaries s
+            on e.emp_no = s.emp_no
+WHERE s.to_date = '9999-01-01' and de.to_date = '9999-01-01'
+order by department_manager desc;
+
+
+
+
 
 
