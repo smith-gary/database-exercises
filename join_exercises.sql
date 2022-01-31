@@ -46,10 +46,10 @@ select concat(u.name, ', ', u.email, ', ', r.name) as user_info
 from users as u
          right join roles r on u.role_id = r.id;
 
-select concat(r.name, ' ', count(*)) as number_of_user_roles
-from users
-join roles r on users.role_id = r.id
-group by role_id;
+select concat(roles.name, ' ', count(*)) as number_of_user_roles
+from roles
+left join users u on roles.id = u.role_id
+group by roles.name;
 
 use employees;
 
@@ -61,7 +61,9 @@ FROM employees as e
               ON de.emp_no = e.emp_no
          JOIN departments as d
               ON d.dept_no = de.dept_no
-WHERE de.to_date = '9999-01-01';
+WHERE de.to_date = '9999-01-01'
+# WHERE de.to_date > curdate()
+order by Department_Name;
 
 SELECT d.dept_name as Department_Name,
        concat(e.first_name, ' ', e.last_name) as Department_Manager
@@ -73,13 +75,13 @@ FROM employees as e
 WHERE de.to_date = '9999-01-01' and e.gender = 'f';
 
 SELECT concat(t.title) as title,
-    count(*) as Total
+    count(t.emp_no) as Total
 FROM titles as t
          JOIN dept_emp as de
               ON t.emp_no = de.emp_no
          JOIN departments as ds
               ON de.dept_no = ds.dept_no
-WHERE ds.dept_name in ('Customer Service') and t.to_date in ('9999-01-01')
+WHERE ds.dept_name in ('Customer Service') and t.to_date in ('9999-01-01') and de.to_date > curdate()
 group by title;
 
 
@@ -89,14 +91,35 @@ SELECT d.dept_name as Department_Name,
 FROM employees as e
          JOIN dept_manager as de
               ON de.emp_no = e.emp_no
-         left join departments as d
+         join departments as d
               ON d.dept_no = de.dept_no
          join salaries s
             on e.emp_no = s.emp_no
 WHERE s.to_date = '9999-01-01' and de.to_date = '9999-01-01'
-order by department_manager desc;
+order by Department_Name;
 
+# BONUS
 
+CREATE TABLE IF NOT EXISTS emp_manager
+(
+    dept_id INT UNSIGNED NOT NULL,
+    position_id INT UNSIGNED NOT NULL,
+    FOREIGN KEY (dept_id) REFERENCES departments(dept_no),
+    FOREIGN KEY (position_id) REFERENCES dept_manager(dept_no)
+);
+
+SELECT concat(e.first_name, ' ', e.last_name) as Employee,
+       d.dept_name as Department,
+       concat(e.first_name, ' ', e.last_name) as Manager
+FROM employees as e
+         JOIN dept_manager as de
+              ON de.emp_no = e.emp_no
+         join departments as d
+                   ON d.dept_no = de.dept_no
+         join dept_emp s
+              on e.emp_no = s.emp_no
+WHERE s.to_date = '9999-01-01' and de.to_date = '9999-01-01';
+# order by department_manager desc;
 
 
 
